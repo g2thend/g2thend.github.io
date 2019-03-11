@@ -99,13 +99,14 @@
 
 
   <meta name="description" content="3-11 知识点 1,软连接的相对路径  ll  /etc/grub2.cfg /etc/grub2.cfg -&amp;gt; ../boot/grub2/grub.cfg注意：此处以/etc/grub2.cfg为基准，根目录到/boot下寻找。删除软连接：如果为指向目录的软连接，后加/,删除的是源目录里的文件. 打开的文件描述符查看    2,输入输出重定向；管道符  cd  /proc/pidof">
+<meta name="keywords" content="command,linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux 管道">
 <meta property="og:url" content="http://yoursite.com/2019/03/11/linux管道IO/index.html">
 <meta property="og:site_name" content="追溯旧时光">
 <meta property="og:description" content="3-11 知识点 1,软连接的相对路径  ll  /etc/grub2.cfg /etc/grub2.cfg -&amp;gt; ../boot/grub2/grub.cfg注意：此处以/etc/grub2.cfg为基准，根目录到/boot下寻找。删除软连接：如果为指向目录的软连接，后加/,删除的是源目录里的文件. 打开的文件描述符查看    2,输入输出重定向；管道符  cd  /proc/pidof">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-11T13:33:28.653Z">
+<meta property="og:updated_time" content="2019-03-11T15:16:47.748Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux 管道">
 <meta name="twitter:description" content="3-11 知识点 1,软连接的相对路径  ll  /etc/grub2.cfg /etc/grub2.cfg -&amp;gt; ../boot/grub2/grub.cfg注意：此处以/etc/grub2.cfg为基准，根目录到/boot下寻找。删除软连接：如果为指向目录的软连接，后加/,删除的是源目录里的文件. 打开的文件描述符查看    2,输入输出重定向；管道符  cd  /proc/pidof">
@@ -384,13 +385,35 @@
                 
               
 
-              <time title="创建时间：2019-03-11 21:33:28" itemprop="dateCreated datePublished" datetime="2019-03-11T21:33:28+08:00">2019-03-11</time>
+              <time title="创建时间：2019-03-11 23:16:48 / 修改时间：23:16:47" itemprop="dateCreated datePublished" datetime="2019-03-11T23:16:48+08:00">2019-03-11</time>
             
 
+            
+              
+
+              
             
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/linux-学习/" itemprop="url" rel="index"><span itemprop="name">linux 学习</span></a></span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -400,6 +423,13 @@
           
           
 
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
           
 
           
@@ -464,27 +494,19 @@
 
     <footer class="post-footer">
       
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/03/10/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-          </div>
+        <div class="post-tags">
+          
+            <a href="/tags/command/" rel="tag"># command</a>
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
         </div>
+      
+
+      
+      
+      
+
       
 
       
@@ -552,14 +574,50 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-count">1</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
               
 
               
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
 
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
               
             </nav>
           
@@ -625,7 +683,7 @@
 </div>
 
 
-  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动</div>
+  <div class="powered-by"> POWER BY <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> </div>
 
 
 
@@ -639,6 +697,32 @@
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
 
 
 
@@ -685,6 +769,12 @@
 
 
 
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
 
 
 
