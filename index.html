@@ -338,6 +338,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/11/linux管道IO/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yon_">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="追溯旧时光">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/03/11/linux管道IO/" class="post-title-link" itemprop="url">linux 管道</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-11 21:33:28" itemprop="dateCreated datePublished" datetime="2019-03-11T21:33:28+08:00">2019-03-11</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="3-11-知识点"><a href="#3-11-知识点" class="headerlink" title="3-11 知识点"></a>3-11 知识点</h1><blockquote>
+<p>1,软连接的相对路径</p>
+<blockquote>
+<p>ll  /etc/grub2.cfg <br><br>/etc/grub2.cfg -&gt; ../boot/grub2/grub.cfg<br><br>注意：此处以/etc/grub2.cfg为基准，根目录到/boot下寻找。<br>删除软连接：如果为指向目录的软连接，后加/,删除的是源目录里的文件. <br><br>打开的文件描述符查看</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>2,输入输出重定向；管道符</p>
+<blockquote>
+<p>cd  /proc/<code>pidof  vim</code>/fd<br>1 2 3 4 </p>
+<ul>
+<li>1.重定向标准输出到文件：<br>cat foo &gt; foo.txt</li>
+<li>2.重定向标准错误到文件:<br>cat foo 2&gt; foo.txt</li>
+<li>3.重定向标准输出到标准错误<br>cat foo 1&gt;&amp;2</li>
+<li>4.重定向标准错误到标准输出<br>cat foo 2&gt;&amp;1</li>
+<li>5.重定向标准输出，标准错误到同一个文件 :  <br><br>cat foo &gt; foo.txt 2&gt;&amp;1或cat foo &amp;&gt; foo.txt</li>
+</ul>
+</blockquote>
+</blockquote>
+<p><br><br><br></p>
+<blockquote>
+<p>3,1-100累加小玩意</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">echo  &#123;1..100&#125;  |  tr  " "   "+"  | bc</span><br><span class="line"></span><br><span class="line">echo &#123;1..100&#125; | xargs -n1 | echo $[ $(tr '\n' '+') 0 ]  </span><br><span class="line"></span><br><span class="line">seq  -s  +  100  | bc</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/10/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -650,7 +812,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-count">3</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
