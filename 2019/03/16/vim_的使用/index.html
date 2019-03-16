@@ -98,25 +98,25 @@
 
 
 
-  <meta name="description" content="1，几个想了一会的小命令 tr ：   需要标准输入 而不是参数    不带参数：将SET2中的每个字符替换SET1中的每个字符，字符是顺序替换，如果SET1的字符长度大于SET2，那么将SET1中多出来的字符用SET2中的最后一个字符替换。     -c, -C, –complement 用集合1中的字符串替换，要求字符集为ASCII。 -d, –delete 删除集合1中的字符而不是转换 -s">
-<meta name="keywords" content="command,linux,life">
+  <meta name="description" content="vim  常用 光标移动  h或退格: 左移一个字符； l或空格: 右移一个字符； j: 下移一行； k: 上移一行； gj: 移动到一段内的下一行； gk: 移动到一段内的上一行； +或Enter: 把光标移至下一行第一个非空白字符。 -: 把光标移至上一行第一个非空白字符。 w: 前移一个单词，光标停在下一个单词开头； W: 移动下一个单词开头，但忽略一些标点； e: 前移一个单词，光标停在下">
+<meta name="keywords" content="command,linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="tr及软硬链接区别">
-<meta property="og:url" content="http://yoursite.com/2019/03/12/linux-tr/index.html">
+<meta property="og:title" content="vim常见使用">
+<meta property="og:url" content="http://yoursite.com/2019/03/16/vim_的使用/index.html">
 <meta property="og:site_name" content="追溯旧时光">
-<meta property="og:description" content="1，几个想了一会的小命令 tr ：   需要标准输入 而不是参数    不带参数：将SET2中的每个字符替换SET1中的每个字符，字符是顺序替换，如果SET1的字符长度大于SET2，那么将SET1中多出来的字符用SET2中的最后一个字符替换。     -c, -C, –complement 用集合1中的字符串替换，要求字符集为ASCII。 -d, –delete 删除集合1中的字符而不是转换 -s">
+<meta property="og:description" content="vim  常用 光标移动  h或退格: 左移一个字符； l或空格: 右移一个字符； j: 下移一行； k: 上移一行； gj: 移动到一段内的下一行； gk: 移动到一段内的上一行； +或Enter: 把光标移至下一行第一个非空白字符。 -: 把光标移至上一行第一个非空白字符。 w: 前移一个单词，光标停在下一个单词开头； W: 移动下一个单词开头，但忽略一些标点； e: 前移一个单词，光标停在下">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-12T11:42:03.818Z">
+<meta property="og:updated_time" content="2019-03-16T08:30:35.670Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tr及软硬链接区别">
-<meta name="twitter:description" content="1，几个想了一会的小命令 tr ：   需要标准输入 而不是参数    不带参数：将SET2中的每个字符替换SET1中的每个字符，字符是顺序替换，如果SET1的字符长度大于SET2，那么将SET1中多出来的字符用SET2中的最后一个字符替换。     -c, -C, –complement 用集合1中的字符串替换，要求字符集为ASCII。 -d, –delete 删除集合1中的字符而不是转换 -s">
+<meta name="twitter:title" content="vim常见使用">
+<meta name="twitter:description" content="vim  常用 光标移动  h或退格: 左移一个字符； l或空格: 右移一个字符； j: 下移一行； k: 上移一行； gj: 移动到一段内的下一行； gk: 移动到一段内的上一行； +或Enter: 把光标移至下一行第一个非空白字符。 -: 把光标移至上一行第一个非空白字符。 w: 前移一个单词，光标停在下一个单词开头； W: 移动下一个单词开头，但忽略一些标点； e: 前移一个单词，光标停在下">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/12/linux-tr/">
+  <link rel="canonical" href="http://yoursite.com/2019/03/16/vim_的使用/">
 
 
 
@@ -126,7 +126,7 @@
   };
 </script>
 
-  <title>tr及软硬链接区别 | 追溯旧时光</title>
+  <title>vim常见使用 | 追溯旧时光</title>
   
 
 
@@ -342,7 +342,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/12/linux-tr/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/16/vim_的使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yon_">
@@ -359,7 +359,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">tr及软硬链接区别
+          <h1 class="post-title" itemprop="name headline">vim常见使用
 
               
             
@@ -385,7 +385,7 @@
                 
               
 
-              <time title="创建时间：2019-03-12 19:42:03" itemprop="dateCreated datePublished" datetime="2019-03-12T19:42:03+08:00">2019-03-12</time>
+              <time title="创建时间：2019-03-16 16:30:35" itemprop="dateCreated datePublished" datetime="2019-03-16T16:30:35+08:00">2019-03-16</time>
             
 
             
@@ -445,42 +445,127 @@
       
 
       
-        <h3 id="1，几个想了一会的小命令"><a href="#1，几个想了一会的小命令" class="headerlink" title="1，几个想了一会的小命令"></a>1，几个想了一会的小命令</h3><blockquote>
-<p>tr ：</p>
+        <h2 id="vim-常用"><a href="#vim-常用" class="headerlink" title="vim  常用"></a>vim  常用</h2><blockquote>
+<p>光标移动</p>
+<ul>
+<li>h或退格: 左移一个字符；</li>
+<li>l或空格: 右移一个字符；</li>
+<li>j: 下移一行；</li>
+<li>k: 上移一行；</li>
+<li>gj: 移动到一段内的下一行；</li>
+<li>gk: 移动到一段内的上一行；</li>
+<li>+或Enter: 把光标移至下一行第一个非空白字符。</li>
+<li>-: 把光标移至上一行第一个非空白字符。</li>
+<li>w: 前移一个单词，光标停在下一个单词开头；</li>
+<li>W: 移动下一个单词开头，但忽略一些标点；</li>
+<li>e: 前移一个单词，光标停在下一个单词末尾；</li>
+<li>E: 移动到下一个单词末尾，如果词尾有标点，则移动到标点；</li>
+<li>b: 后移一个单词，光标停在上一个单词开头；</li>
+<li>B: 移动到上一个单词开头，忽略一些标点；</li>
+<li>ge: 后移一个单词，光标停在上一个单词末尾；</li>
+<li>gE: 同 ge ，不过‘单词’包含单词相邻的标点。</li>
+<li>(: 前移1句。</li>
+<li>): 后移1句。</li>
+<li>{: 前移1段。</li>
+<li>}: 后移1段。</li>
+<li>fc: 把光标移到同一行的下一个c字符处(同一行)</li>
+<li>Fc: 把光标移到同一行的上一个c字符处</li>
+<li>tc: 把光标移到同一行的下一个c字符前</li>
+<li>Tc: 把光标移到同一行的上一个c字符后</li>
+<li>;: 配合f &amp; t使用，重复一次</li>
+<li>,: 配合f &amp; t使用，反向重复一次</li>
+<li>0: 移动到行首。</li>
+<li>g0: 移到光标所在屏幕行行首。</li>
+<li>^: 移动到本行第一个非空白字符。</li>
+<li>g^: 同 ^ ，但是移动到当前屏幕行第一个非空字符处。</li>
+<li>$:移动到行尾。</li>
+<li>nG: 到文件第n行。</li>
+<li>H: 把光标移到屏幕最顶端一行。</li>
+<li>M: 把光标移到屏幕中间一行。</li>
+<li>L: 把光标移到屏幕最底端一行。</li>
+<li>gg: 到文件头部。</li>
+<li>G: 到文件尾部。</li>
+</ul>
 </blockquote>
 <blockquote>
-<p>需要标准输入 而不是参数<br>    不带参数：将SET2中的每个字符替换SET1中的每个字符，字符是顺序替换，如果SET1的字符长度大于SET2，那么将SET1中多出来的字符用SET2中的最后一个字符替换。<br><br>    <br><br> -c, -C, –complement 用集合1中的字符串替换，要求字符集为ASCII。</p>
-<p>-d, –delete 删除集合1中的字符而不是转换</p>
-<p>-s, –squeeze-repeats 删除所有重复出现字符序列，只保留第一个；即将重复出现字符串压缩为一个字符串。<br> <br></p>
-<p>-t, –truncate-set1 先删除第一字符集较第二字符集多出的字符 </p>
-<p>例子：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"aaAA1bbBB2ccCC3"</span> | tr -s <span class="string">'a-zA-Z'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#压缩</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"hello 123 world "</span> | tr -d -c <span class="string">'0-9 \n'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"GNU is  not          UNIX . Recursicve right?"</span> | tr -s  <span class="string">' '</span>   压缩字符</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"aa.,a 1 b#<span class="variable">$bb</span> 2 c*/cc 3 ddd 4"</span> | tr -d -c <span class="string">'0-9 \n'</span></span><br><span class="line"><span class="comment">#只保留其中的数字和空格</span></span><br><span class="line">cat  /etc/centos-release | tr  -d  <span class="string">"\n"</span> | tr <span class="string">" "</span> <span class="string">"\n"</span></span><br><span class="line"></span><br><span class="line">cat /etc/centos-release |tr -cs  <span class="string">'[:alpha:]'</span>  <span class="string">"\n"</span></span><br><span class="line"><span class="comment">#将⽂件/etc/centos-release中每个单词（由字⺟组成）显⽰在独⽴⼀⾏，并⽆空⾏</span></span><br><span class="line"><span class="comment">#第一个是我自己想了半天搞出来的，后一个是答案，tr   -cs 的真实意思为'[:alpha:]'补集字符之外的字符全部由换行符替换，如有多余的会压缩成一个，我的大概也是这个意思，不过没有充分运用命令的可选项。</span></span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<a id="more"></a>
-<h3 id="符号链接与硬链接的区别"><a href="#符号链接与硬链接的区别" class="headerlink" title="符号链接与硬链接的区别"></a>符号链接与硬链接的区别</h3><blockquote>
-<p>符号链接：<br>软链接有自己的文件属性及权限等；<br>可对不存在的文件或目录创建软链接；<br>软链接可交叉文件系统；<br>软链接可对文件或目录创建；<br>创建软链接时，链接计数 i_nlink 不会增加；<br>删除软链接并不影响被指向的文件，但若被指向的原文件被删除，则相关软连接被称为死链接（即 dangling link，若被指向路径文件被重新创建，死链接可恢复为正常的软链接）。</p>
-</blockquote>
-<blockquote>
-<p>硬链接：<br>文件有相同的 inode 及 data block；<br>只能对已存在的文件进行创建；<br>不能交叉文件系统进行硬链接的创建；<br>不能对目录进行创建，只可对文件创建；<br>删除一个硬链接文件并不影响其他有相同 inode 号的文件。</p>
-</blockquote>
-<blockquote>
-<p>删除文件：<br>每个文件存在两个计数器：i_count 与 i_nlink，即引用计数与硬链接计数。结构体 inode 中的 i_count 用于跟踪文件被访问的数量，而 i_nlink 则是上述使用 ls -l 等命令查看到的文件硬链接数。或者说 i_count 跟踪文件在内存中的情况，而 i_nlink 则是磁盘计数器。当文件被删除时，则 i_nlink 先被设置成 0。文件的这两个计数器使得 Linux 系统升级或程序更新变的容易。系统或程序可在不关闭的情况下（即文件 i_count 不为 0），将新文件以同样的文件名进行替换，新文件有自己的 inode 及 data block，旧文件会在相关进程关闭后被完整的删除</p>
-</blockquote>
-<blockquote>
-<p>对于已删除的文件，空间未释放：</p>
-<ol>
-<li>将当前线程进行重启，关闭线程，从而让句柄释放，释放空间 </li>
-<li>找到指定的文件句柄，将当前文件句柄的大小设置为空<br><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lsof  | deleted</span><br><span class="line">`</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
+<p>文本插入</p>
+<ul>
+<li>i: 在光标前插入</li>
+<li>I: 在当前行第一个非空字符前插入；</li>
+<li>a: 在光标后插入；</li>
+<li>A: 在当前行最后插入；</li>
+<li>o: 在下面新建一行插入；</li>
+<li>O: 在上面新建一行插入；</li>
+<li>:r filename在当前位置插入另一个文件的内容。</li>
+<li>:[n]r filename在第n行插入另一个文件的内容。</li>
+<li>:r !date 在光标处插入当前日期与时间。:r !command将其它shell命令的输出插入当前光标处。<br><br>改写，实质上为删除后进入插入模式</li>
+<li>c[n]w: 改写光标后1(n)个词。</li>
+<li>c[n]l: 改写光标后n个字母。</li>
+<li>c[n]h: 改写光标前n个字母。</li>
+<li>[n]s: 以输入的文本替代光标之后1(n)个字符，相当于c[n]l。</li>
+<li>[n]S: 删除指定数目的行，并以所输入文本代替之。</li>
+</ul>
 </blockquote>
 <blockquote>
-<p>找到已删除未释放的文件及占用的程序进程，获取PID及fd,文件标识符，进而清空文件内容。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> &gt; /proc/PID/fd/FD</span><br><span class="line"></span><br><span class="line">`</span><br></pre></td></tr></table></figure></p>
+<p>剪切，复制，及粘贴</p>
+<ul>
+<li>[n]x: 剪切光标右边n个字符，相当于d[n]l。</li>
+<li>[n]X: 剪切光标左边n个字符，相当于d[n]h。</li>
+<li>y: 复制在可视模式下选中的文本。</li>
+<li>yy or Y: 复制整行文本。</li>
+<li>y[n]w: 复制一(n)个词。</li>
+<li>y[n]l: 复制光标右边1(n)个字符。</li>
+<li>y[n]h: 复制光标左边1(n)个字符。</li>
+<li>d[n]w: 删除（剪切）1(n)个单词</li>
+<li>d[n]l: 删除（剪切）光标右边1(n)个字符。</li>
+<li>d[n]h: 删除（剪切）光标左边1(n)个字符。</li>
+<li>d0: 删除（剪切）当前位置到行首的内容</li>
+<li>[n] dd: 删除（剪切）1(n)行。</li>
+<li>:m,nd<enter> 剪切m行到n行的内容。(末行模式)</enter></li>
+<li>d1G或dgg: 剪切光标以上的所有行。</li>
+<li>dG: 剪切光标以下的所有行。</li>
+<li>daw和das：剪切一个词和剪切一个句子，即使光标不在词首和句首也没关系。</li>
+<li>d/f<enter>：这是一个比较高级的组合命令，它将删除当前位置 到下一个f之间的内容。</enter></li>
+<li>p: 在光标之后粘贴。</li>
+<li>P: 在光标之前粘贴。</li>
+</ul>
 </blockquote>
 <blockquote>
+<p>查找</p>
+<ul>
+<li>/something: 在后面的文本中查找something。</li>
+<li>?something: 在前面的文本中查找something。</li>
+<li>/pattern/+number: 将光标停在包含pattern的行后面第number行上。</li>
+<li>/pattern/-number: 将光标停在包含pattern的行前面第number行上。</li>
+<li>n: 向后查找下一个。</li>
+<li>N: 向前查找下一个。</li>
+</ul>
+</blockquote>
 <blockquote>
-<p>今天对于文件系统的搜索有点为难，归根为有些心大，基本的命令比如ls 加上通配符有些为难，费了一会功夫才完成。以后无论是否学过，都要沉下心来，仔细的理解操作。将体会较深的东西写下来，多想想。<br><br><br>时间合理利用，抓紧时间。键盘要敲烂。</p>
+<p>查找并替换</p>
 </blockquote>
+<ul>
+<li>:s/old/new - 用new替换当前行第一个old。</li>
+<li>:s/old/new/g - 用new替换当前行所有的old。</li>
+<li>:n1,n2s/old/new/g - 用new替换文件n1行到n2行所有的old。</li>
+<li>:%s/old/new/g - 用new替换文件中所有的old。</li>
+<li>:%s/^/xxx/g - 在每一行的行首插入xxx，^表示行首。</li>
+<li>:%s/$/xxx/g−在每一行的行尾插入xxx，表示行尾。</li>
+<li>所有替换命令末尾加上c，每个替换都将需要用户确认。 如：%s/old/new/gc，加上i则忽略大小写(ignore)。</li>
+</ul>
+<blockquote>
+<p>正则表达式的使用（在vim中）</p>
 </blockquote>
+<ul>
+<li>\d: 表示十进制数</li>
+<li>\s: 表示空格</li>
+<li>\S: 非空字符</li>
+<li>\a: 英文字母</li>
+<li>|: 表示 或</li>
+<li>.: 表示 .</li>
+<li>{m,n}: 表示m到n个字符。这要和 \s与\a等连用，如 \a{m,n} 表示m 到n个英文字母。</li>
+<li>{m,}: 表示m到无限多个字符。</li>
+</ul>
 
       
     </div>
@@ -513,8 +598,6 @@
           
             <a href="/tags/linux/" rel="tag"># linux</a>
           
-            <a href="/tags/life/" rel="tag"># life</a>
-          
         </div>
       
 
@@ -526,14 +609,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/03/12/linux管道IO/" rel="next" title="linux 管道">
+                <i class="fa fa-chevron-left"></i> linux 管道
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/12/linux管道IO/" rel="prev" title="linux 管道">
-                linux 管道 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/03/16/正则表达的运用/" rel="prev" title="正则表达式的使用">
+                正则表达式的使用 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -685,7 +772,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1，几个想了一会的小命令"><span class="nav-number">1.</span> <span class="nav-text">1，几个想了一会的小命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#符号链接与硬链接的区别"><span class="nav-number">2.</span> <span class="nav-text">符号链接与硬链接的区别</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#vim-常用"><span class="nav-number">1.</span> <span class="nav-text">vim  常用</span></a></li></ol></div>
             
 
           </div>
