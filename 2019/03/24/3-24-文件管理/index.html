@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="关于文件系统，常见命令底层原理（cp与inode关系）123456789101112131415161718192021222324 文件名区分大小写 文件名最长255个字节 包括路径在内文件名称最长4095个字节$PWD  显示当前目录pwd  -P  真实物理路径     -L  显示链接路径dirname     /etc/selinux/configbasename   /etc/seli">
+<meta name="keywords" content="command,linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件系统，常见命令底层原理（cp,mv，rm与inode关系）">
+<meta property="og:url" content="http://yoursite.com/2019/03/24/3-24-文件管理/index.html">
+<meta property="og:site_name" content="追溯旧时光">
+<meta property="og:description" content="关于文件系统，常见命令底层原理（cp与inode关系）123456789101112131415161718192021222324 文件名区分大小写 文件名最长255个字节 包括路径在内文件名称最长4095个字节$PWD  显示当前目录pwd  -P  真实物理路径     -L  显示链接路径dirname     /etc/selinux/configbasename   /etc/seli">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-24T05:15:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="文件系统，常见命令底层原理（cp,mv，rm与inode关系）">
+<meta name="twitter:description" content="关于文件系统，常见命令底层原理（cp与inode关系）123456789101112131415161718192021222324 文件名区分大小写 文件名最长255个字节 包括路径在内文件名称最长4095个字节$PWD  显示当前目录pwd  -P  真实物理路径     -L  显示链接路径dirname     /etc/selinux/configbasename   /etc/seli">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/24/3-24-文件管理/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>文件系统，常见命令底层原理（cp,mv，rm与inode关系） | 追溯旧时光</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">追溯旧时光</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/24/3-24-文件管理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yon_">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="追溯旧时光">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">文件系统，常见命令底层原理（cp,mv，rm与inode关系）
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-24 13:21:37 / 修改时间：13:15:55" itemprop="dateCreated datePublished" datetime="2019-03-24T13:21:37+08:00">2019-03-24</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/linux-学习/" itemprop="url" rel="index"><span itemprop="name">linux 学习</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="关于文件系统，常见命令底层原理（cp与inode关系）"><a href="#关于文件系统，常见命令底层原理（cp与inode关系）" class="headerlink" title="关于文件系统，常见命令底层原理（cp与inode关系）"></a>关于文件系统，常见命令底层原理（cp与inode关系）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"> 文件名区分大小写</span><br><span class="line"> 文件名最长255个字节</span><br><span class="line"> 包括路径在内文件名称最长4095个字节</span><br><span class="line"><span class="variable">$PWD</span>  显示当前目录</span><br><span class="line"><span class="built_in">pwd</span>  -P  真实物理路径</span><br><span class="line">     -L  显示链接路径</span><br><span class="line">dirname     /etc/selinux/config</span><br><span class="line">basename   /etc/selinux/config</span><br><span class="line">ls [OPTION]... [FILE]...</span><br><span class="line">ls -a 包含隐藏文件</span><br><span class="line">	ls -l 显示额外的信息</span><br><span class="line">	ls -R 目录递归通过</span><br><span class="line">	ls -ld 目录和符号链接信息</span><br><span class="line">	ls -1 文件分行显示</span><br><span class="line">	ls –S 按从大到小排序</span><br><span class="line">	ls –t 按mtime排序</span><br><span class="line">	ls –u 配合-t选项，显示并按atime从新到旧排序</span><br><span class="line">	ls –U 按目录存放顺序显示</span><br><span class="line">	ls –X 按文件后缀排序</span><br><span class="line"></span><br><span class="line"><span class="built_in">stat</span> [OPTION]... FILE...</span><br><span class="line">     access time 访问时间，atime，读取文件内容</span><br><span class="line">	 modify time 修改时间, mtime，改变文件内容（数据）</span><br><span class="line">	 change time 改变时间, ctime，元数据发生改</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">touch命令</span><br><span class="line">	 格式：touch [OPTION]... FILE...</span><br><span class="line">	-a 仅改变 atime和ctime</span><br><span class="line">	-m 仅改变 mtime和ctime</span><br><span class="line">	-t [[CC]YY]MMDDhhmm[.ss]</span><br><span class="line">	    指定atime和mtime的时间戳</span><br><span class="line">	-c 如果文件不存在，则不予创建</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">cp [OPTION]... [-T] SOURCE DEST</span><br><span class="line"> cp [OPTION]... SOURCE... DIRECTORY</span><br><span class="line"> cp [OPTION]... -t DIRECTORY SOURCE...</span><br><span class="line"> cp SRC DEST</span><br><span class="line"> SRC是文件：</span><br><span class="line"> 如果目标不存在：新建DEST，并将SRC中内容填充至DEST中</span><br><span class="line"> 如果目标存在：</span><br><span class="line"> 如果DEST是文件：将SRC中的内容覆盖至DEST中</span><br><span class="line"> 基于安全，建议为cp命令使用-i选项</span><br><span class="line"> 如果DEST是目录：在DEST下新建与原文件同名的文件，并将SRC中内容</span><br><span class="line">填充至新文件中</span><br><span class="line"></span><br><span class="line"> cp SRC... DEST</span><br><span class="line"> SRC... 多个文件</span><br><span class="line"> DEST 必须存在，且为目录，其它情形均会出错</span><br><span class="line"> cp SRC DEST</span><br><span class="line"> SRC是目录：此时使用选项：-r</span><br><span class="line"> 如果DEST不存在：则创建指定目录，复制SRC目录中所有文件至DEST中</span><br><span class="line"> 如果DEST存在：</span><br><span class="line"> 如果DEST是文件：报错</span><br><span class="line"> 如果DEST是目录：在目的目录新建与原目录名相同的目录,并将SRC内容复制到新目录中</span><br><span class="line"></span><br><span class="line">-i 覆盖前提示</span><br><span class="line">  -n 不覆盖，注意两者顺序</span><br><span class="line">  -r, -R 递归复制目录及内部的所有内容</span><br><span class="line">  -a 归档，相当于-dR --preserv=all</span><br><span class="line">  -d --no-dereference --preserv=links 不复制原文件，只复制链接名</span><br><span class="line">  --preserv[=ATTR_LIST]</span><br><span class="line">mode: 权限</span><br><span class="line">ownership: 属主属组</span><br><span class="line">timestamp:</span><br><span class="line">links</span><br><span class="line">xattr</span><br><span class="line">context</span><br><span class="line">all</span><br><span class="line"> -p 等同--preserv=mode,ownership,timestamp</span><br><span class="line"> -v --verbose</span><br><span class="line"> -f --force</span><br><span class="line"> -u --update 只复制源比目标更新文件或目标不存在的文件</span><br><span class="line"> -b 目标存在，覆盖前先备份，形式为 filename~</span><br><span class="line"> --backup=numbered 目标存在，覆盖前先备份加数字后缀</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mv [OPTION]... [-T] SOURCE DEST</span><br><span class="line">	 mv [OPTION]... SOURCE... DIRECTORY</span><br><span class="line">	 mv [OPTION]... -t DIRECTORY SOURCE...</span><br><span class="line">	 常用选项：</span><br><span class="line">	 -i 交互式</span><br><span class="line">	 -f 强制</span><br><span class="line">	 -b 目标存在，覆盖前先备份</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rm [OPTION]... FILE...</span><br><span class="line">	 常用选项：</span><br><span class="line">	-i 交互式</span><br><span class="line">	-f 强制删除</span><br><span class="line">	-r 递归</span><br><span class="line">	 --no-preserve-root 删除/</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">tree 显示目录树</span><br><span class="line">-d: 只显示目录</span><br><span class="line">-L level：指定显示的层级数目</span><br><span class="line">-P pattern: 只显示由指定pattern匹配到的路径</span><br><span class="line"> mkdir 创建目录</span><br><span class="line"> -p: 存在于不报错，且可自动创建所需的各目录</span><br><span class="line"> -v: 显示详细信息</span><br><span class="line"> -m MODE: 创建目录时直接指定权限</span><br><span class="line"> rmdir 删除空目录</span><br><span class="line"> -p: 递归删除父空目录</span><br><span class="line"> -v: 显示详细信息</span><br><span class="line"> rm -r 递归删除目录树</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">inode（index node）表中包含文件系统所有文件列表</span><br><span class="line">	一个节点 （索引节点）是在一个表项，包含有关文件的信息（ 元数据 ），包</span><br><span class="line">	括：</span><br><span class="line">	文件类型，权限，UID，GID</span><br><span class="line">	链接数（指向这个文件名路径名称个数）</span><br><span class="line">	该文件的大小和不同的时间戳</span><br><span class="line">	指向磁盘上文件的数据块指针</span><br><span class="line">	有关文件的其他数据</span><br><span class="line">	文件引用一个是 inode号</span><br><span class="line">	人是通过文件名来引用一个文件</span><br><span class="line">	一个目录是目录下的文件名和文件inode号之间的映射</span><br></pre></td></tr></table></figure>
+<h3 id="常见文件处理命令在底层关于inode-的处理"><a href="#常见文件处理命令在底层关于inode-的处理" class="headerlink" title="常见文件处理命令在底层关于inode 的处理"></a>常见文件处理命令在底层关于inode 的处理</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cp和inode</span><br><span class="line">    分配一个空闲的inode号，在inode表中生成新条目</span><br><span class="line">	在目录中创建一个目录项，将名称与inode编号关联</span><br><span class="line">	拷贝数据生成新的文件</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">rm和inode</span><br><span class="line">    链接数递减，从而释放的inode号可以被重用</span><br><span class="line">	把数据块放在空闲列表中</span><br><span class="line">	删除目录项</span><br><span class="line">	数据实际上不会马上被删除，但当另一个文件使用数据块时将被覆盖</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mv和inode</span><br><span class="line">    如果mv命令的目标和源在相同的文件系统，作为mv 命令</span><br><span class="line">	用新的文件名创建对应新的目录项</span><br><span class="line">	删除旧目录条目对应的旧的文件名</span><br><span class="line">	不影响inode表（除时间戳）或磁盘上的数据位置：没有数据被移动！</span><br><span class="line">	如果目标和源在一个不同的文件系统， mv相当于cp和rm</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">硬链接</span><br><span class="line">    创建硬链接会增加额外的记录项以引用文件</span><br><span class="line">	对应于同一文件系统上一个物理文件</span><br><span class="line">	每个目录引用相同的inode号</span><br><span class="line">	创建时链接数递增</span><br><span class="line">	删除文件时：</span><br><span class="line">	rm命令递减计数的链接</span><br><span class="line">	文件要存在，至少有一个链接数</span><br><span class="line">	当链接数为零时，该文件被删除</span><br><span class="line">	不能跨越驱动器或分区</span><br><span class="line">符号链接</span><br><span class="line">    一个符号链接指向另一个文件</span><br><span class="line">	ls - l的 显示链接的名称和引用的文件</span><br><span class="line">	一个符号链接的内容是它引用文件的名称</span><br><span class="line">	可以对目录进行</span><br><span class="line">	可以跨分区</span><br><span class="line">	指向的是另一个文件的路径；</span><br><span class="line">          其大小为指向的路径字符串的长度；</span><br><span class="line">          不增加或减</span><br><span class="line">	  少目标文件inode的引用计数；</span><br><span class="line">	语法：</span><br><span class="line">	ln -s filename [linkname]</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">文件可以包含多种类型的数据</span><br><span class="line">	检查文件的类型，然后确定适当的打开命令或应用程序使用</span><br><span class="line">	file [options] &lt;filename&gt;...</span><br><span class="line">	常用选项:</span><br><span class="line">	-b 列出文件辨识结果时，不显示文件名称</span><br><span class="line">	-f filelist 列出文件filelist中文件名的文件类型</span><br><span class="line">	-F 使用指定分隔符号替换输出文件名后默认的”:”分隔符</span><br><span class="line">	-L 查看对应软链接对应文件的文件类型</span><br><span class="line">	--<span class="built_in">help</span> 显示命令在线帮助</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+    <div>
+      
+        
+
+      
+   </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/command/" rel="tag"># command</a>
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/24/3-24正则与通配符/" rel="next" title="linux 通配符与正则表达式">
+                <i class="fa fa-chevron-left"></i> linux 通配符与正则表达式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/24/1-vim_的使用/" rel="prev" title="vim常见使用">
+                vim常见使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="Yon_">
+            
+              <p class="site-author-name" itemprop="name">Yon_</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于文件系统，常见命令底层原理（cp与inode关系）"><span class="nav-number">1.</span> <span class="nav-text">关于文件系统，常见命令底层原理（cp与inode关系）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常见文件处理命令在底层关于inode-的处理"><span class="nav-number">2.</span> <span class="nav-text">常见文件处理命令在底层关于inode 的处理</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yon_</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by"> BY  <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> </div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a></div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

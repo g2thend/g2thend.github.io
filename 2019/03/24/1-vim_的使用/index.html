@@ -98,25 +98,25 @@
 
 
 
-  <meta name="description" content="判断操作系统版本1234cat  /etc/centos-release  |  grep  &quot;[0-9]\+&quot;  -o  | grep  -m 1 &quot;.*&quot;cat  /etc/centos-release  |  grep  &quot;[0-9]\+&quot;  -o  | haed  -1cat  /etc/centos-release  |  grep  &quot;[[:blank:]][0-9]\+&quot;  -o |">
-<meta name="keywords" content="command,linux,正则表达式">
+  <meta name="description" content="vim  常用 光标移动  h或退格: 左移一个字符； l或空格: 右移一个字符； j: 下移一行； k: 上移一行； gj: 移动到一段内的下一行； gk: 移动到一段内的上一行； +或Enter: 把光标移至下一行第一个非空白字符。 -: 把光标移至上一行第一个非空白字符。 w: 前移一个单词，光标停在下一个单词开头； W: 移动下一个单词开头，但忽略一些标点； e: 前移一个单词，光标停在下">
+<meta name="keywords" content="command,linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="正则表达式的使用">
-<meta property="og:url" content="http://yoursite.com/2019/03/16/正则表达的运用/index.html">
+<meta property="og:title" content="vim常见使用">
+<meta property="og:url" content="http://yoursite.com/2019/03/24/1-vim_的使用/index.html">
 <meta property="og:site_name" content="追溯旧时光">
-<meta property="og:description" content="判断操作系统版本1234cat  /etc/centos-release  |  grep  &quot;[0-9]\+&quot;  -o  | grep  -m 1 &quot;.*&quot;cat  /etc/centos-release  |  grep  &quot;[0-9]\+&quot;  -o  | haed  -1cat  /etc/centos-release  |  grep  &quot;[[:blank:]][0-9]\+&quot;  -o |">
+<meta property="og:description" content="vim  常用 光标移动  h或退格: 左移一个字符； l或空格: 右移一个字符； j: 下移一行； k: 上移一行； gj: 移动到一段内的下一行； gk: 移动到一段内的上一行； +或Enter: 把光标移至下一行第一个非空白字符。 -: 把光标移至上一行第一个非空白字符。 w: 前移一个单词，光标停在下一个单词开头； W: 移动下一个单词开头，但忽略一些标点； e: 前移一个单词，光标停在下">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-16T08:32:35.543Z">
+<meta property="og:updated_time" content="2019-03-24T03:59:42.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="正则表达式的使用">
-<meta name="twitter:description" content="判断操作系统版本1234cat  /etc/centos-release  |  grep  &quot;[0-9]\+&quot;  -o  | grep  -m 1 &quot;.*&quot;cat  /etc/centos-release  |  grep  &quot;[0-9]\+&quot;  -o  | haed  -1cat  /etc/centos-release  |  grep  &quot;[[:blank:]][0-9]\+&quot;  -o |">
+<meta name="twitter:title" content="vim常见使用">
+<meta name="twitter:description" content="vim  常用 光标移动  h或退格: 左移一个字符； l或空格: 右移一个字符； j: 下移一行； k: 上移一行； gj: 移动到一段内的下一行； gk: 移动到一段内的上一行； +或Enter: 把光标移至下一行第一个非空白字符。 -: 把光标移至上一行第一个非空白字符。 w: 前移一个单词，光标停在下一个单词开头； W: 移动下一个单词开头，但忽略一些标点； e: 前移一个单词，光标停在下">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/03/16/正则表达的运用/">
+  <link rel="canonical" href="http://yoursite.com/2019/03/24/1-vim_的使用/">
 
 
 
@@ -126,7 +126,7 @@
   };
 </script>
 
-  <title>正则表达式的使用 | 追溯旧时光</title>
+  <title>vim常见使用 | 追溯旧时光</title>
   
 
 
@@ -342,7 +342,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/16/正则表达的运用/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/24/1-vim_的使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yon_">
@@ -359,7 +359,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">正则表达式的使用
+          <h1 class="post-title" itemprop="name headline">vim常见使用
 
               
             
@@ -385,9 +385,13 @@
                 
               
 
-              <time title="创建时间：2019-03-16 16:32:35" itemprop="dateCreated datePublished" datetime="2019-03-16T16:32:35+08:00">2019-03-16</time>
+              <time title="创建时间：2019-03-24 13:21:42 / 修改时间：11:59:42" itemprop="dateCreated datePublished" datetime="2019-03-24T13:21:42+08:00">2019-03-24</time>
             
 
+            
+              
+
+              
             
           </span>
 
@@ -445,96 +449,129 @@
       
 
       
-        <p>判断操作系统版本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cat  /etc/centos-release  |  grep  <span class="string">"[0-9]\+"</span>  -o  | grep  -m 1 <span class="string">".*"</span></span><br><span class="line">cat  /etc/centos-release  |  grep  <span class="string">"[0-9]\+"</span>  -o  | haed  -1</span><br><span class="line">cat  /etc/centos-release  |  grep  <span class="string">"[[:blank:]][0-9]\+"</span>  -o | tr -d <span class="string">" "</span></span><br><span class="line">cat  /etc/centos-release  | grep  <span class="string">" [0-9]"</span> -o</span><br></pre></td></tr></table></figure></p>
-<p>本机ip<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ifconfig eth0 |grep  -o  &apos;[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;\.[0-9]\&#123;1,3\&#125;&apos;|head -n1</span><br><span class="line">ifconfig eth0 |grep  -Eo  &apos;([0-9]&#123;1,3&#125;\.)&#123;3&#125;([0-9]&#123;1,3&#125;)&apos;|head -n1</span><br></pre></td></tr></table></figure></p>
-<p>ifconfig命令结果中1-255之间的数值<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifconfig |egrep -o <span class="string">"\&lt;([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\&gt;"</span></span><br></pre></td></tr></table></figure></p>
-<p>编写脚本显示主机信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -e  <span class="string">"  this  shell scrpit tells  about  the system  infomation   "</span></span><br><span class="line"><span class="built_in">echo</span> -e  <span class="string">"  the hostname is : `hostname`  "</span></span><br><span class="line"><span class="built_in">echo</span> -e  <span class="string">"  the ip of hostname is :  `ifconfig ens33 |grep -Eo '([0-9]&#123;1,3&#125;\.)&#123;3&#125;[0-9]&#123;1,3&#125;'|head -n1`   "</span></span><br><span class="line"><span class="built_in">echo</span> -e  <span class="string">"  the ip of host is :`ifconfig   |grep  -Eo  '([[:digit:]]&#123;1,3&#125;.)&#123;3&#125;[[:digit:]]&#123;1,3&#125;' |head -1`  "</span></span><br><span class="line"><span class="built_in">echo</span> -e  <span class="string">"  the version of os is : `cat  /etc/redhat-release`  "</span></span><br><span class="line"><span class="built_in">echo</span> -e  <span class="string">"  the version of kernel is : `uname  -r ` "</span> </span><br><span class="line"><span class="built_in">echo</span> -e  <span class="string">"  model of cpu is :  `  lscpu    | grep  "</span>Model name:<span class="string">"  |cut  -d :  -f2  | tr  -s "</span> <span class="string">" ` "</span></span><br><span class="line"><span class="built_in">echo</span> -e  <span class="string">"  the capability of hardware is :   `lsblk   | grep "</span>\bsda <span class="string">" | tr -s  "</span> <span class="string">"   "</span>:<span class="string">" | cut  -d : -f 1,5 `  "</span></span><br></pre></td></tr></table></figure></p>
-<p>访问日志前10的IP<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cut  -d <span class="string">" "</span> -f1 acess_log | sort  | uniq -c | sort  -nr |　head   | tr -s <span class="string">" "</span>| cut -d<span class="string">" "</span>  -f3</span><br></pre></td></tr></table></figure></p>
-<p>本机已连接的外部ip<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ss -nt  | tr  -s <span class="string">" "</span> : | cut  -d :  -f6</span><br></pre></td></tr></table></figure></p>
-<p>获取当前目录下文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls  -al |  grep  <span class="string">"^-"</span>  | tr -s <span class="string">" "</span> :  | cut -d :  -f10</span><br></pre></td></tr></table></figure></p>
-<p>找出/etc/passwd中的两位或三位数<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep  <span class="string">"\&lt;[0-9]\&#123;2,3\&#125;\&gt;"</span>  passwd</span><br></pre></td></tr></table></figure></p>
-<p>显示CentOS7的/etc/grub2.cfg文件中，至少以一个空白字符开头的且后面有非<br>空白字符的行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">egrep ^[[:space:]]\+[^[:space:]].*$ /etc/grub2.cfg</span><br></pre></td></tr></table></figure></p>
-<p>找出/etc/passwd用户名和shell同名的行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">grep  <span class="string">"\&lt;\([[:alpha:]]\&#123;1,\&#125;\)\&gt;:.*\&lt;\1\&gt;$"</span>   /etc/passwd</span><br><span class="line">`</span><br></pre></td></tr></table></figure></p>
-<p>统计last命令中以root登录的每个主机IP地址登录次数<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">last  | grep yon  | tr  -s  <span class="string">" "</span> %  |  cut -d % -f3  | sort -rn  | uniq -c |  sort  -rn  |  grep <span class="string">"[[:digit:]]$"</span></span><br></pre></td></tr></table></figure></p>
-<p>将此字符串：welcome to study  good  linux 中的每个字符去重并排序，重复<br>次数多的排到前面<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> welcome to study  good linux|grep -o <span class="string">"."</span>|sort|uniq -c|sort -nr</span><br></pre></td></tr></table></figure></p>
-<p>找出“ldd /usr/bin/cat”命令的结果中的⽂件路径<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ldd /usr/bin/cat | grep -o <span class="string">'/[^[:space:]]\+'</span></span><br></pre></td></tr></table></figure></p>
-<p>关于目录及文件的权限</p>
-<blockquote>
-<p> /etc/fstab复制到/data/dir，⾄少需要什么权限？</p>
-<p>cp命令 有执⾏权限 /etc/fstab 读权限 /data/dir 写<br>权限和执⾏权限</p>
-</blockquote>
-<blockquote>
-<p>当⽤户docker对/testdir ⽬录⽆执⾏权限时，意味着⽆法做哪些操作？</p>
+        <h2 id="vim-常用"><a href="#vim-常用" class="headerlink" title="vim  常用"></a>vim  常用</h2><blockquote>
+<p>光标移动</p>
 <ul>
-<li>无法进入目录</li>
-<li>可以用ls查看列表，但是无法查看文件属性类型</li>
-<li>就算对目录中的文件有rw权限，也无法查看和写入&gt;&gt;也不行</li>
+<li>h或退格: 左移一个字符；</li>
+<li>l或空格: 右移一个字符；</li>
+<li>j: 下移一行；</li>
+<li>k: 上移一行；</li>
+<li>gj: 移动到一段内的下一行；</li>
+<li>gk: 移动到一段内的上一行；</li>
+<li>+或Enter: 把光标移至下一行第一个非空白字符。</li>
+<li>-: 把光标移至上一行第一个非空白字符。</li>
+<li>w: 前移一个单词，光标停在下一个单词开头；</li>
+<li>W: 移动下一个单词开头，但忽略一些标点；</li>
+<li>e: 前移一个单词，光标停在下一个单词末尾；</li>
+<li>E: 移动到下一个单词末尾，如果词尾有标点，则移动到标点；</li>
+<li>b: 后移一个单词，光标停在上一个单词开头；</li>
+<li>B: 移动到上一个单词开头，忽略一些标点；</li>
+<li>ge: 后移一个单词，光标停在上一个单词末尾；</li>
+<li>gE: 同 ge ，不过‘单词’包含单词相邻的标点。</li>
+<li>(: 前移1句。</li>
+<li>): 后移1句。</li>
+<li>{: 前移1段。</li>
+<li>}: 后移1段。</li>
+<li>fc: 把光标移到同一行的下一个c字符处(同一行)</li>
+<li>Fc: 把光标移到同一行的上一个c字符处</li>
+<li>tc: 把光标移到同一行的下一个c字符前</li>
+<li>Tc: 把光标移到同一行的上一个c字符后</li>
+<li>;: 配合f &amp; t使用，重复一次</li>
+<li>,: 配合f &amp; t使用，反向重复一次</li>
+</ul>
+</blockquote>
+<ul>
+<li>0: 移动到行首。</li>
+<li>g0: 移到光标所在屏幕行行首。</li>
+<li>^: 移动到本行第一个非空白字符。</li>
+<li>g^: 同 ^ ，但是移动到当前屏幕行第一个非空字符处。</li>
+<li>$:移动到行尾。</li>
+<li>nG: 到文件第n行。</li>
+<li>H: 把光标移到屏幕最顶端一行。</li>
+<li>M: 把光标移到屏幕中间一行。</li>
+<li>L: 把光标移到屏幕最底端一行。</li>
+<li>gg: 到文件头部。</li>
+<li>G: 到文件尾部。</li>
+</ul>
+<blockquote>
+<p>文本插入</p>
+<ul>
+<li>i: 在光标前插入</li>
+<li>I: 在当前行第一个非空字符前插入；</li>
+<li>a: 在光标后插入；</li>
+<li>A: 在当前行最后插入；</li>
+<li>o: 在下面新建一行插入；</li>
+<li>O: 在上面新建一行插入；</li>
+<li>:r filename在当前位置插入另一个文件的内容。</li>
+<li>:[n]r filename在第n行插入另一个文件的内容。</li>
+<li>:r !date 在光标处插入当前日期与时间。:r !command将其它shell命令的输出插入当前光标处。<br>改写，实质上为删除后进入插入模式</li>
+<li>c[n]w: 改写光标后1(n)个词。</li>
+<li>c[n]l: 改写光标后n个字母。</li>
+<li>c[n]h: 改写光标前n个字母。</li>
+<li>[n]s: 以输入的文本替代光标之后1(n)个字符，相当于c[n]l。</li>
+<li>[n]S: 删除指定数目的行，并以所输入文本代替之。</li>
 </ul>
 </blockquote>
 <blockquote>
-<p>当⽤户mongodb对/testdir ⽬录⽆读权限时，意味着⽆法做哪些操作？#</p>
+<p>剪切，复制，及粘贴</p>
 <ul>
-<li>可以进入目录，无法查看文件列表，可以查看ll file详细信息</li>
-<li>可以执行目录内程序，cat file可以查看文件内容</li>
-<li>如果对文件有w权限，还可以通过&gt;&gt;写入文件</li>
+<li>[n]x: 剪切光标右边n个字符，相当于d[n]l。</li>
+<li>[n]X: 剪切光标左边n个字符，相当于d[n]h。</li>
+<li>y: 复制在可视模式下选中的文本。</li>
+<li>yy or Y: 复制整行文本。</li>
+<li>y[n]w: 复制一(n)个词。</li>
+<li>y[n]l: 复制光标右边1(n)个字符。</li>
+<li>y[n]h: 复制光标左边1(n)个字符。</li>
+<li>d[n]w: 删除（剪切）1(n)个单词</li>
+<li>d[n]l: 删除（剪切）光标右边1(n)个字符。</li>
+<li>d[n]h: 删除（剪切）光标左边1(n)个字符。</li>
+<li>d0: 删除（剪切）当前位置到行首的内容</li>
+<li>[n] dd: 删除（剪切）1(n)行。</li>
+<li>:m,nd<enter> 剪切m行到n行的内容。(末行模式)</enter></li>
+<li>d1G或dgg: 剪切光标以上的所有行。</li>
+<li>dG: 剪切光标以下的所有行。</li>
+<li>daw和das：剪切一个词和剪切一个句子，即使光标不在词首和句首也没关系。</li>
+<li>d/f<enter>：这是一个比较高级的组合命令，它将删除当前位置 到下一个f之间的内容。</enter></li>
+<li>p: 在光标之后粘贴。</li>
+<li>P: 在光标之前粘贴。</li>
 </ul>
 </blockquote>
 <blockquote>
-<p>当⽤户redis 对/testdir ⽬录⽆写权限时，该⽬录下的只读⽂件file1是否可修改和删除？</p>
+<p>查找</p>
 <ul>
-<li>不能在该目录下删除和创建文件。</li>
+<li>/something: 在后面的文本中查找something。</li>
+<li>?something: 在前面的文本中查找something。</li>
+<li>/pattern/+number: 将光标停在包含pattern的行后面第number行上。</li>
+<li>/pattern/-number: 将光标停在包含pattern的行前面第number行上。</li>
+<li>n: 向后查找下一个。</li>
+<li>N: 向前查找下一个。</li>
 </ul>
 </blockquote>
 <blockquote>
-<p>当⽤户zabbix对/testdir ⽬录有写和执⾏权限时，该⽬录下的只读⽂件file1是否可修改和删除？#</p>
+<p>查找并替换</p>
+</blockquote>
 <ul>
-<li>不能改、可删除。</li>
+<li>:s/old/new - 用new替换当前行第一个old。</li>
+<li>:s/old/new/g - 用new替换当前行所有的old。</li>
+<li>:n1,n2s/old/new/g - 用new替换文件n1行到n2行所有的old。</li>
+<li>:%s/old/new/g - 用new替换文件中所有的old。</li>
+<li>:%s/^/xxx/g - 在每一行的行首插入xxx，^表示行首。</li>
+<li>:%s/$/xxx/g−在每一行的行尾插入xxx，表示行尾。</li>
+<li>所有替换命令末尾加上c，每个替换都将需要用户确认。 如：%s/old/new/gc，加上i则忽略大小写(ignore)。</li>
 </ul>
-</blockquote>
-<p> <br><br> <br><br> <br></p>
 <blockquote>
-<p>grep正则表达式常用字符（自用）<br>常用选项</p>
+<p>正则表达式的使用（在vim中）</p>
+</blockquote>
 <ul>
-<li>-c 显示匹配到的行的数目，不显示内容</li>
-<li>-n 相对行号</li>
-<li>-w 表达式当作词来寻找，类似\&lt; > 界定符<br>扩展的正则表达式元字符(egrep)</li>
-<li>+ : 一个或多个前字符</li>
-<li>\? : 零个或一个</li>
-<li>a|b : a 或 b </li>
-<li>() : 字符组</li>
-<li>[:alnum:]　数字字母</li>
-<li>[:alpha:]  字母</li>
-<li>[:ctrl:]   控制字符</li>
-<li>[:digit:] </li>
-<li>[:graph:] 非空字符（不包含空格，控制字符）</li>
-<li>[:lower:] </li>
-<li>[:print:] 与[:graph:]类似,但包含空格字符</li>
-<li>[:punct:] 标点字符</li>
-<li>[:upper:]</li>
-<li>\w        所有字母与数字称之为词字符</li>
-<li>\W        所有字母与数字之外的字符，非词 字符<br>例子</li>
-<li>‘love|hate’</li>
-<li>love(able|ly)(ov)+<br><br><br><br><br>登录的基本流程<br>PID为1的init进程(systemd),从文件inittab 读取指令，或者派生出getty进程，这些进程打开终端接口，提供标准输入输出，并显示登录提示符，接下来执行/bin/login，其依次执行：提示用户输入口令，加密验证口令，设置初始环境，启动用户的登录shell，登录shell先查找系统/etc/profile,并执行命令，然后再用户的主目录下查找.profile 并执行，并显示默认的命令提示符。</li>
+<li>\d: 表示十进制数</li>
+<li>\s: 表示空格</li>
+<li>\S: 非空字符</li>
+<li>\a: 英文字母</li>
+<li>|: 表示 或</li>
+<li>.: 表示.</li>
+<li>{m,n}: 表示m到n个字符。这要和 \s与\a等连用，如 \a{m,n} 表示m 到n个英文字母。</li>
+<li>{m,}: 表示m到无限多个字符。</li>
 </ul>
-</blockquote>
-<blockquote>
-<p>doti(.) 命令</p>
-<blockquote>
-<p>内置命令,以脚本名为参数，在当前目录下执行，并不启动新shell，成为当前环境的一部分。</p>
-</blockquote>
-</blockquote>
-<blockquote>
-<p>exec &lt;  file<br>命令exec 将file作为标准输入，读取并执行，顶替了当前的shell运行，当命令执行完毕，shell随之退出，即当前shell被销毁。</p>
-<ul>
-<li>exec 3&gt; file1</li>
-<li>who   &gt;&amp; 3</li>
-<li>date  &gt;&amp; 3</li>
-<li>exec 3&gt;&amp;-</li>
-<li>exec 3&lt;&amp; file </li>
-<li>cat   &lt;&amp;3</li>
-<li>exec  &lt;&amp;3-</li>
-</ul>
-</blockquote>
 
       
     </div>
@@ -567,8 +604,6 @@
           
             <a href="/tags/linux/" rel="tag"># linux</a>
           
-            <a href="/tags/正则表达式/" rel="tag"># 正则表达式</a>
-          
         </div>
       
 
@@ -580,8 +615,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/16/vim_的使用/" rel="next" title="vim常见使用">
-                <i class="fa fa-chevron-left"></i> vim常见使用
+              <a href="/2019/03/24/3-24-文件管理/" rel="next" title="文件系统，常见命令底层原理（cp,mv，rm与inode关系）">
+                <i class="fa fa-chevron-left"></i> 文件系统，常见命令底层原理（cp,mv，rm与inode关系）
               </a>
             
           </div>
@@ -590,8 +625,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/24/3-24正则与通配符/" rel="prev" title="linux 通配符与正则表达式">
-                linux 通配符与正则表达式 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/03/24/2-linux常用压缩工具/" rel="prev" title="linux常见压缩工具使用">
+                linux常见压缩工具使用 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -636,8 +671,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -723,6 +767,23 @@
         </div>
       </div>
 
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#vim-常用"><span class="nav-number">1.</span> <span class="nav-text">vim  常用</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
       
 
       
