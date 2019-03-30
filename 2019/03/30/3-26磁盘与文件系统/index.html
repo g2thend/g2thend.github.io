@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="创建文件系统 mkfs [options] [-t type] [fs-options] device [size]   -L ‘LABEL’ 设定卷标~] # mkfs  -t   btrfs   cramfs  ext2    ext3    ext4    fat     minix   msdos   vfat    xfs   mke2fs123456789101112131415161">
+<meta name="keywords" content="linux,文件系统挂载,RAID">
+<meta property="og:type" content="article">
+<meta property="og:title" content="磁盘文件系统，挂载，RAID">
+<meta property="og:url" content="http://yoursite.com/2019/03/30/3-26磁盘与文件系统/index.html">
+<meta property="og:site_name" content="追溯旧时光">
+<meta property="og:description" content="创建文件系统 mkfs [options] [-t type] [fs-options] device [size]   -L ‘LABEL’ 设定卷标~] # mkfs  -t   btrfs   cramfs  ext2    ext3    ext4    fat     minix   msdos   vfat    xfs   mke2fs123456789101112131415161">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-03-30T09:58:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="磁盘文件系统，挂载，RAID">
+<meta name="twitter:description" content="创建文件系统 mkfs [options] [-t type] [fs-options] device [size]   -L ‘LABEL’ 设定卷标~] # mkfs  -t   btrfs   cramfs  ext2    ext3    ext4    fat     minix   msdos   vfat    xfs   mke2fs123456789101112131415161">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/03/30/3-26磁盘与文件系统/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>磁盘文件系统，挂载，RAID | 追溯旧时光</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">追溯旧时光</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/30/3-26磁盘与文件系统/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yon_">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/head.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="追溯旧时光">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">磁盘文件系统，挂载，RAID
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-03-30 17:59:20 / 修改时间：17:58:51" itemprop="dateCreated datePublished" datetime="2019-03-30T17:59:20+08:00">2019-03-30</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/linux-学习/" itemprop="url" rel="index"><span itemprop="name">linux 学习</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="创建文件系统"><a href="#创建文件系统" class="headerlink" title="创建文件系统"></a>创建文件系统</h3><blockquote>
+<p>mkfs [options] [-t type] [fs-options] device [size] <br>  -L ‘LABEL’ 设定卷标<br><br>~] # mkfs  -t <br><br>  btrfs   cramfs  ext2    ext3    ext4    fat     minix   msdos   vfat    xfs</p>
+</blockquote>
+<blockquote>
+<p>mke2fs<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">mke2fs - create an ext2/ext3/ext4 filesystem</span><br><span class="line"></span><br><span class="line">      -t &#123;ext2|ext3|ext4&#125; 指定文件系统类型</span><br><span class="line">      -b &#123;1024|2048|4096&#125; 指定块大小</span><br><span class="line">      -L ‘LABEL’ 设置卷标</span><br><span class="line">      -j 相当于 -t ext3</span><br><span class="line">       mkfs.ext3 = mkfs -t ext3 = mke2fs -j = mke2fs -t ext3</span><br><span class="line">      -i <span class="comment"># 为数据空间中每多少个字节创建一个inode；不应该小于block大小</span></span><br><span class="line">      -N <span class="comment"># 指定分区中创建多少个inode</span></span><br><span class="line">      -I 一个inode记录占用的磁盘空间大小，128---4096</span><br><span class="line">      -m <span class="comment"># 默认5%,为管理人员预留空间占总空间的百分比</span></span><br><span class="line">      -O FEATURE[,...] 启用指定特性</span><br><span class="line">      -O ^FEATURE 关闭指定特性</span><br><span class="line"></span><br><span class="line">     指定的特性为;</span><br><span class="line">     <span class="comment"># sync option today has effect only for ext2, ext3, fat,  vfat  and ufs</span></span><br><span class="line">      async</span><br><span class="line">      atime</span><br><span class="line">      noatime</span><br><span class="line">      auto</span><br><span class="line">      noauto</span><br><span class="line">      defaults    </span><br><span class="line">      Use default options: rw, suid, dev,<span class="built_in">exec</span>, auto, nouser, and async.</span><br><span class="line">      noexec</span><br><span class="line">      ro </span><br><span class="line">      rw  等</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>查看文件系统类型及UUID</p>
+<blockquote>
+<p>parted    /dev/sda         print   list  <br><br>blkid<br><br>lsblk  -f<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">指向设备的另一种方法与设备无关</span><br><span class="line">        blkid：块设备属性信息查看</span><br><span class="line">        blkid [OPTION]... [DEVICE]</span><br><span class="line">            -U UUID 根据指定的UUID来查找对应的设备</span><br><span class="line">            -L LABEL 根据指定的LABEL来查找对应的设备</span><br><span class="line">        e2label：管理ext系列文件系统的LABEL</span><br><span class="line">        e2label DEVICE [LABEL]分区</span><br><span class="line">        findfs ：查找分区</span><br><span class="line">        findfs [options] LABEL=&lt;label&gt;</span><br><span class="line">        findfs [options] UUID=&lt;uuid&gt;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>tune2fs<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">tune2fs：重新设定ext系列文件系统可调整参数的值</span><br><span class="line">        -l 查看指定文件系统超级块信息；super block</span><br><span class="line">        -L <span class="string">'LABEL’ 修改卷标</span></span><br><span class="line"><span class="string">        -m # 修预留给管理员的空间百分比</span></span><br><span class="line"><span class="string">        -j 将ext2升级为ext3</span></span><br><span class="line"><span class="string">        -O 文件系统属性启用或禁用, –O ^has_journal</span></span><br><span class="line"><span class="string">        -o 调整文件系统的默认挂载选项，–o ^acl</span></span><br><span class="line"><span class="string">        -U UUID 修改UUID号</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        dumpe2fs：</span></span><br><span class="line"><span class="string">        将磁盘块分组管理</span></span><br><span class="line"><span class="string">        -h：查看超级块信息，不显示分组信息</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       通过dumpe2fs    /dev/sdb1可以看到superblock 在Group  有备份，在一个分区</span></span><br><span class="line"><span class="string">       创建文件系统后，在分区的首部有自举块，接着为超级块，超级块之后的数据分为数个块组进行管理，如果超级快异常，可以通过备份进行恢复。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">       对于xfs文件系统，使用xfs_info 查看文件系统信息</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p> 文件系统检测修复<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">      常发生于死机或者非正常关机之后</span><br><span class="line">      挂载为文件系统标记为“no clean”</span><br><span class="line">       注意：一定不要在挂载状态下修复</span><br><span class="line">      fsck: File System Check</span><br><span class="line">               fsck.FS_TYPE</span><br><span class="line">               fsck -t FS_TYPE</span><br><span class="line">               -p 自动修复错误</span><br><span class="line">               -r 交互式修复错误</span><br><span class="line">               FS_TYPE 一定要与分区上已经文件类型相同</span><br><span class="line">       e2fsck：ext系列文件专用的检测修复工具</span><br><span class="line">               -y 自动回答为yes</span><br><span class="line">               -f 强制修复</span><br><span class="line"></span><br><span class="line">一般原因可能是分区表信息被破坏，使用该命令可以将备份至超级块的信息恢复至分区表。</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p>挂载文件系统</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">mount DEVICE MOUNT_POINT</span><br><span class="line">        mount：通过查看/etc/mtab文件显示当前已挂载的所有设备</span><br><span class="line">        mount [-fnrsvw] [-t vfstype] [-o options] device dir</span><br><span class="line">        device：指明要挂载的设备；</span><br><span class="line">        (1) 设备文件：例如/dev/sda5</span><br><span class="line">        (2) 卷标：-L <span class="string">'LABEL'</span>, 例如 -L <span class="string">'MYDATA'</span></span><br><span class="line">        (3) UUID, -U <span class="string">'UUID'</span>：例如 -U <span class="string">'0c50523c-43f1-45e7-</span></span><br><span class="line"><span class="string">        85c0-a126711d406e'</span></span><br><span class="line">        (4) 伪文件系统名称：proc, sysfs, devtmpfs, configfs</span><br><span class="line">        dir：挂载点</span><br><span class="line">        事先存在，建议使用空目录</span><br><span class="line">        进程正在使用中的设备无法被卸载</span><br><span class="line">        常用选项：</span><br><span class="line">            -t vsftype 指定要挂载的设备上的文件系统类型</span><br><span class="line">        -r <span class="built_in">readonly</span>，只读挂载</span><br><span class="line">        -w <span class="built_in">read</span> and write, 读写挂载</span><br><span class="line">        -n 不更新/etc/mtab，mount不可见</span><br><span class="line">        -a 自动挂载所有支持自动挂载的设备(定义在了/etc/fstab文件</span><br><span class="line">           中，且挂载选项中有auto功能)</span><br><span class="line">        -L <span class="string">'LABEL'</span> 以卷标指定挂载设备</span><br><span class="line">        -U <span class="string">'UUID'</span> 以UUID指定要挂载的设备</span><br><span class="line">        -B, --<span class="built_in">bind</span> 绑定目录到另一个目录上</span><br><span class="line">        查看内核追踪到的已挂载的所有设备</span><br><span class="line">        cat /proc/mounts</span><br><span class="line">             -o options：(挂载文件系统的选项)，多个选项使用逗号分隔</span><br><span class="line">                async 异步模式 sync 同步模式,内存更改时，同时写磁盘</span><br><span class="line">                atime/noatime 包含目录和文件</span><br><span class="line">                diratime/nodiratime 目录的访问时间戳</span><br><span class="line">                auto/noauto 是否支持自动挂载,是否支持-a选项</span><br><span class="line">                <span class="built_in">exec</span>/noexec 是否支持将文件系统上运行应用程序</span><br><span class="line">                dev/nodev 是否支持在此文件系统上使用设备文件</span><br><span class="line">                suid/nosuid 是否支持suid和sgid权限</span><br><span class="line">                remount 重新挂载</span><br><span class="line">                ro 只读 rw 读写</span><br><span class="line">                user/nouser 是否允许普通用户挂载此设备，/etc/fstab使用</span><br><span class="line">                acl 启用此文件系统上的acl功能</span><br><span class="line">                loop 使用loop设备</span><br><span class="line">                defaults：相当于rw, suid, dev, <span class="built_in">exec</span>, auto, nouser, async</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">                卸载</span><br><span class="line">                查看正在访问指定文件系统的进程</span><br><span class="line">                lsof MOUNT_POINT</span><br><span class="line">                fuser -v MOUNT_POINT</span><br><span class="line">                终止所有在正访问指定的文件系统的进程</span><br><span class="line">                fuser -km MOUNT_POINT</span><br><span class="line">                卸载</span><br><span class="line">                umount DEVICE</span><br><span class="line">                umount MOUNT_POINT</span><br></pre></td></tr></table></figure>
+<h2 id="RAID"><a href="#RAID" class="headerlink" title="RAID"></a>RAID</h2><blockquote>
+<p>RAID 中主要有三个关键概念和技术：镜像（ Mirroring ）、数据条带（ Data Stripping ）和数据校验（ Data parity ）</p>
+<blockquote>
+<p>镜像的写性能要稍低， 确保数据正确地写到多个磁盘需要更多的时间消耗。数据条带，将数据分片保存在多个不同的磁盘，多个数据分片共同组成一个完整数据副本，这与镜像的多个副本是不同的，它通常用于性能考虑<br><br><br>数据条带具有更高的并发粒度，当访问数据时，可以同时对位于不同磁盘上数据进行读写操作， 从而获得非常可观的 I/O 性能提升 。<br> <br><br>数据校验，利用冗余数据进行数据错误检测和修复，冗余数据通常采用海明码、异或操作等算法来计算获得。利用校验功能，可以很大程度上提高磁盘阵列的可靠性、鲁棒性和容错能力。<br>不过，数据校验需要从多处读取数据并进行计算和对比，会影响系统性能。 不同等级的 RAID 采用一个或多个以上的三种技术，来获得不同的数据可靠性、可用性和 I/O 性能。至于设计何种 RAID （甚至新的等级或类型）或采用何种模式的 RAID ，需要在深入理解系统需求的前提下进行合理选择，综合评估可靠性、性能和成本来进行折中的选择</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>RAID0<br> 是一种简单的、无数据校验的数据条带化技术。实际上不是一种真正的 RAID ，因为它并不提供任何形式的冗余策略。 RAID0 将所在磁盘条带化后组成大容量的存储空间，将数据分散存储在所有磁盘中，以独立访问方式实现多块磁盘的并读访问。由于可以并发执行 I/O 操作，总线带宽得到充分利用。再加上不需要进行数据校验， RAID0 的性能在所有 RAID 等级中是最高的。理论上讲，一个由 n 块磁盘组成的 RAID0 ，它的读写性能是单个磁盘性能的 n 倍，但由于总线带宽等多种因素的限制，实际的性能提升低于理论值。RAID0 具有低成本、高读写性能、 100% 的高存储空间利用率等优点，但是它不提供数据冗余保护，一旦数据损坏，将无法恢复。 因此， RAID0 一般适用于对性能要求严格但对数据安全性和可靠性不高的应用，如视频、音频存储、临时数据缓存空间等。</p>
+<blockquote>
+<p> 特性：采用剥离，数据将在几个磁盘上进行分割。数据被分成很多数据块，每一数据块会被写入不同的磁盘。从而， 每一磁盘的工作负荷都得到了降低，这有助于加速数据传输。RAID-0可让磁盘更好地响应，尤其是电子邮件、数据库和互联网应用。实施RAID-0最少需 要两块硬盘。优势：通过把I/O负载分布到多个硬盘上，可提高系统性能。实施简单。需要注意的是：RAID-0不具有数据保护功能，不适合于关键数据。</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>RAID1<br> 称为镜像，它将数据完全一致地分别写到工作磁盘和镜像 磁盘，它的磁盘空间利用率为 50% 。 RAID1 在数据写入时，响应时间会有所影响，但是读数据的时候没有影响。 RAID1 提供了最佳的数据保护，一旦工作磁盘发生故障，系统自动从镜像磁盘读取数据，不会影响用户工作。RAID1 与 RAID0 刚好相反，是为了增强数据安全性使两块 磁盘数据呈现完全镜像，从而达到安全性好、技术简单、管理方便。 RAID1 拥有完全容错的能力，但实现成本高。 RAID1 应用于对顺序读写性能要求高以及对数据保护极为重视的应用，如对邮件系统的数据保护</p>
+<blockquote>
+<p>特性：RAID-1通过磁盘镜像来实现，主要用来确保数据的可靠性。同样的数据将被复制存储到不同的磁盘上，如果某个磁盘出现 故障，还可以在阵列内的某个磁盘上找到相应的数据，因此可以很容易地进行恢复。镜像不但可以创建冗余数据而带来高可用性，还可以保持关键应用的正常运行。 优势：数据读取的性能有所提高，而数据写入性能与单个磁盘没有区别。100％数据冗余意味着某个出现磁盘故障时不需要对数据进行重建。需要注意的是：磁盘 容量的低效率使用-在所有RAID类型中费用最高（100％）。</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>RAID5<br>RAID5 应该是目前最常见的 RAID 等级，它的原理与 RAID4 相似，区别在于校验数据分布在阵列中的所有磁盘上，而没有采用专门的校验磁盘。对于数据和校验数据，它们的写操作可以同时发生在完全不同的磁盘上。因此， RAID5 不存在 RAID4 中的并发写操作时的校验盘性能瓶颈问题。另外， RAID5 还具备很好的扩展性。当阵列磁盘 数量增加时，并行操作量的能力也随之增长，可比 RAID4 支持更多的磁盘，从而拥有更高的容量以及更高的性能。RAID5 的磁盘上同时存储数据和校验数据，数据块和对应的校验信息存保存在不同的磁盘上，当一个数据盘损坏时，系统可以根据同一条带的其他数据块和对应的校验数据来重建损坏的数据。与其他 RAID 等级一样，重建数据时， RAID5 的性能会受到较大的影响。RAID5 兼顾存储性能、数据安全和存储成本等各方面因素，它可以理解为 RAID0 和 RAID1 的折中方案，是目前综合性能最佳的数据保护解决方案。 RAID5 基本上可以满足大部分的存储应用需求，数据中心大多采用它作为应用数据的保护方案</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>特性：RAID-5通过一种称为奇偶检验的技术保持数据的冗余。在多个磁盘上进行数据剥离时，奇偶位数据也会包括在内并分布于 阵列内的所有磁盘上。奇偶数据用于保持数据的完整性并在磁盘出现故障时进行重建。如果阵列内的某个磁盘出现故障，丢失的数据可以根据其它磁盘上的奇偶位数 据进行重建。RAID-5配置要求至少3块硬盘。优势：更有效地利用所有冗余RAID配置的磁盘容量。保持良好的读写性能。需要注意的是：磁盘故障会影响 吞吐速率。故障后重建信息的时间比镜像配置情况下要长。</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>RAID01<br>兼备了 RAID0 和 RAID1 的优点，它先用两块磁盘建立镜像，然后再在镜像内部做条带化。 RAID01 的数据将同时写入到两个磁盘阵列中，如果其中一个阵列损坏，仍可继续工作，保证数据安全性的同时又提高了性能。 RAID01 和 RAID10 内部都含有 RAID1 模式，因此整体磁盘利用率均仅为 50%</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>RAID 10    数据先镜像后条带即：<br>特性：RAID-10是RAID-1和RAID-0的结合。此配置要求至少4块硬盘，在所有RAID等级中，性能、保护功能 及容量都是最佳的。RAID-10包含成对的镜像磁盘，其数据在整个阵列上进行剥离。多数情况下，RAID-10能够承受多个磁盘出现故障的情况，因此更 能保证系统的正常运行。其数据丢失的几率最小。优势：与RAID-1（镜像）有同样的冗余特性，是数据保护的理想选择。需要注意的是：可能价格很高，与镜 像磁盘阵列有关。</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>RAID 01    数据先条带后镜像</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>RAID 50<br>RAID 5与RAID 0的组合，先作RAID 5，再作RAID 0，也就是对多组RAID 5彼此构成Stripe访问。由于RAID 50是以RAID 5为基础，而RAID 5至少需要3颗硬盘，因此要以多组RAID 5构成RAID 50，至少需要6颗硬盘。以RAID 50最小的6颗硬盘配置为例，先把6颗硬盘分为2组，每组3颗构成RAID 5，如此就得到两组RAID 5，然后再把两组RAID 5构成RAID 0。</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>raid50的特性：RAID-50是RAID-5与RAID-0的结合。此配置在RAID-5的子磁盘组的每个磁盘上进行包括奇偶信息在 内的数据的剥离。每个RAID-5子磁盘组要求三个硬盘。RAID-50具备更高的容错能力，因为它允许某个组内有一个磁盘出现故障，而不会造成数据丢 失。而且因为奇偶位分部于RAID-5子磁盘组上，故重建速度有很大提高。优势：更高的容错能力，具备更快数据读取速率的潜力。需要注意的是：磁盘故障会 影响吞吐量。故障后重建信息的时间比镜像配置情况下要长。</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h4 id="各RAID级别最少需要的硬盘数量，RAID0-1-RAID1-2-RAID5-3-RAID10-4-RAID50-6"><a href="#各RAID级别最少需要的硬盘数量，RAID0-1-RAID1-2-RAID5-3-RAID10-4-RAID50-6" class="headerlink" title="各RAID级别最少需要的硬盘数量，RAID0=1   RAID1=2   RAID5=3   RAID10=4   RAID50=6"></a>各RAID级别最少需要的硬盘数量，RAID0=1   RAID1=2   RAID5=3   RAID10=4   RAID50=6</h4><blockquote>
+<blockquote>
+<p>同样硬盘数的情况下：<br>RAID50磁盘的读取速度〉RAID10硬盘读写速度〉RAID50磁盘的写入速度！<br><br>RAID10最少只需要4块硬盘且为偶数，RAID50最少只需要6块硬盘。</p>
+</blockquote>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>RAID 等级</th>
+<th>RAID0</th>
+<th>RAID1</th>
+<th>RAID3</th>
+<th>RAID5</th>
+<th>RAID6</th>
+<th>RAID10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>别名</td>
+<td>条带</td>
+<td>镜像</td>
+<td>专用奇偶校验条带</td>
+<td>分布奇偶校验条带</td>
+<td>双重奇偶校验条带</td>
+<td>镜像加条带</td>
+</tr>
+<tr>
+<td>容错性</td>
+<td>无</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+</tr>
+<tr>
+<td>冗余类型</td>
+<td>无</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+</tr>
+<tr>
+<td>热备份选择</td>
+<td>无</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+</tr>
+<tr>
+<td>读性能</td>
+<td>高</td>
+<td>低</td>
+<td>高</td>
+<td>高</td>
+<td>高</td>
+<td>高</td>
+</tr>
+<tr>
+<td>随机写性能</td>
+<td>高</td>
+<td>低</td>
+<td>低</td>
+<td>一般</td>
+<td>低</td>
+<td>一般</td>
+</tr>
+<tr>
+<td>连续写性能</td>
+<td>高</td>
+<td>低</td>
+<td>低</td>
+<td>低</td>
+<td>低</td>
+<td>一般</td>
+</tr>
+<tr>
+<td>需要磁盘数</td>
+<td>n≥1</td>
+<td>2n (n≥1)</td>
+<td>n≥3</td>
+<td>n≥3</td>
+<td>n≥4</td>
+<td>2n(n≥2)≥4</td>
+</tr>
+<tr>
+<td>可用容量 ​</td>
+<td>全部</td>
+<td>50%</td>
+<td>(n-1)/n</td>
+<td>(n-1)/n</td>
+<td>(n-2)/n</td>
+<td>50%</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+    <div>
+      
+        
+
+      
+   </div>
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/文件系统挂载/" rel="tag"># 文件系统挂载</a>
+          
+            <a href="/tags/RAID/" rel="tag"># RAID</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/24/2-linux常用压缩工具/" rel="next" title="linux常见压缩工具使用">
+                <i class="fa fa-chevron-left"></i> linux常见压缩工具使用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/30/3-30网路路由转发/" rel="prev" title="tcp/ip路由表，路由转发">
+                tcp/ip路由表，路由转发 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head.jpg" alt="Yon_">
+            
+              <p class="site-author-name" itemprop="name">Yon_</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建文件系统"><span class="nav-number">1.</span> <span class="nav-text">创建文件系统</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#RAID"><span class="nav-number"></span> <span class="nav-text">RAID</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#各RAID级别最少需要的硬盘数量，RAID0-1-RAID1-2-RAID5-3-RAID10-4-RAID50-6"><span class="nav-number">0.1.</span> <span class="nav-text">各RAID级别最少需要的硬盘数量，RAID0=1   RAID1=2   RAID5=3   RAID10=4   RAID50=6</span></a></li></ol></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yon_</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by"> BY  <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> </div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a></div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
